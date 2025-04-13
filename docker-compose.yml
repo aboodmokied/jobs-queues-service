@@ -17,4 +17,5 @@ services:
     depends_on:
       - redis
     environment:
+      - PORT=3000
       - REDIS_HOST=redis
