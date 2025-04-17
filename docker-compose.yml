@@ -8,14 +8,18 @@ services:
       - "6379:6379"
 
   app:
-    build: .
-    container_name: my_jobs_app
+    build:
+      context: .
+    container_name: myy_jobs_app
     ports:
       - "3000:3000"
     volumes:
       - .:/app
+      - /app/node_modules
+      - /app/dist
     depends_on:
       - redis
+
     environment:
       - PORT=3000
       - REDIS_HOST=redis
