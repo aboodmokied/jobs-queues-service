@@ -5,7 +5,8 @@
   "scripts": {
     "start": "npm run build && node dist/index.js",
     "dev": "ts-node-dev --poll src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "worker": "ts-node-dev --poll src/workers/email.worker.ts"
   },
   "keywords": [],
   "author": "",

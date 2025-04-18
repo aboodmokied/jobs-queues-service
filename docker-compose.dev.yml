@@ -11,7 +11,7 @@ services:
     build:
       context: .
       target: dev
-    container_name: myy_jobs_app
+    container_name: my_jobs_app
     ports:
       - "3000:3000"
     volumes:
@@ -24,3 +24,20 @@ services:
     environment:
       - PORT=3000
       - REDIS_HOST=redis
+
+
+  worker:
+    build:
+      context: .
+      target: dev
+    container_name: my-worker
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    command: npm run worker
