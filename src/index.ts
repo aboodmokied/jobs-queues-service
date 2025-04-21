@@ -14,7 +14,7 @@ app.get('/add-job',async(req,res)=>{
         message:'suiiiii',
         subject:'Test'
     }
-    await emailQueue.add('email',jobData);
+    await emailQueue.add('sendEmail',jobData);
     const jobsCount=await emailQueue.count()
     console.log('new job added:',jobsCount)
     res.sendStatus(201);
