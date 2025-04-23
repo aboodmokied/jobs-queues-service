@@ -1,13 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Worker } from 'bullmq';
 import { RedisConnection } from '../connections/redis.connection';
+import { MailerService } from '../services/mailer.service';
 
 export const emailWorker = new Worker(
     'emailQueue',
     async job => {
-      const { to, subject, message } = job.data;
-      console.log(`Sending email to ${to}: ${subject}`);
-      await new Promise(res => setTimeout(res, 1000));
-      console.log(`Email sent to ${to}`);
+      // const { to, subject, html, text } = job.data as EmailOptions;
+      const mailerService=new MailerService();
+      await mailerService.sendEmail(job.data)
     },
     { connection:RedisConnection }
   );
