@@ -1,25 +1,27 @@
-import express from 'express';
-import { emailQueue } from './queues/email.queue';
+import express, { Request, Response } from 'express';
+import dotenv from 'dotenv';
+import { EmailOptions } from './types/email-options.types';
+import { MailerService } from './services/mailer.service';
+dotenv.config();
+
+import { serverAdapter } from './dashboard/bull-board';
+import { emailRoutes } from './routes/email.routes';
 
 const app=express();
 
+app.use(express.json());
 
-app.get('/',(req,res)=>{
-    res.sendStatus(200);
-});
-app.get('/add-job',async(req,res)=>{
-    const jobData={
-        to:'abood',
-        from:'me',
-        message:'suiiiii',
-        subject:'Test'
-    }
-    await emailQueue.add('email',jobData);
-    const jobsCount=await emailQueue.count()
-    console.log('new job added:',jobsCount)
-    res.sendStatus(201);
+app.post('/',async(req:Request<{}, {}, EmailOptions>, res: Response)=>{
+    const mailerService=new MailerService();
+    const result=await mailerService.sendEmail(req.body);
+    res.send(result);
 });
 
+
+
+app.use('/admin/queues', serverAdapter.getRouter());
+
+app.use('/email',emailRoutes);
 
 const PORT=process.env.PORT || 3000;
 
