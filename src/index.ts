@@ -6,15 +6,16 @@ dotenv.config();
 
 import { serverAdapter } from './dashboard/bull-board';
 import { emailRoutes } from './routes/email.routes';
+import { SentimentSevice } from './services/sentiment.service';
 
 const app=express();
 
 app.use(express.json());
 
-app.post('/',async(req:Request<{}, {}, EmailOptions>, res: Response)=>{
-    const mailerService=new MailerService();
-    const result=await mailerService.sendEmail(req.body);
-    res.send(result);
+app.post('/',async(req:Request<{}, {}, {text:string}>, res: Response)=>{
+    const sentimentService=new SentimentSevice();
+    const sentiment=await sentimentService.analyze(req.body.text);
+    res.send({sentiment});
 });
 
 
