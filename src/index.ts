@@ -14,8 +14,8 @@ app.use(express.json());
 
 app.post('/',async(req:Request<{}, {}, {text:string}>, res: Response)=>{
     const sentimentService=new SentimentSevice();
-    const sentiment=await sentimentService.analyze(req.body.text);
-    res.send({sentiment});
+    const rating=await sentimentService.analyze(req.body.text);
+    res.send({rating});
 });
 
 
