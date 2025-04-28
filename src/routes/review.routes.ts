@@ -4,7 +4,7 @@ import { reviewQueue } from '../queues/review.queue';
 
 export const reviewRoutes:Router=express();
 
-reviewRoutes.post('/webhook',async(req:Request<{}, {}, ReviewOptions>, res: Response)=>{
+reviewRoutes.post('/',async(req:Request<{}, {}, ReviewOptions>, res: Response)=>{
     const { restaurantId, reviewText, reviewId } = req.body;
     await reviewQueue.add('review',{
         restaurantId, 
