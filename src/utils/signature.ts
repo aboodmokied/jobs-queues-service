@@ -3,20 +3,22 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const SECRET_KEY = process.env.SIGNATURE_SECRET_KEY;
-
 /**
- * Sign a payload with a secret key using HMAC.
+ * Sign a payload with a secret key using HMAC SHA-256.
  *
- * @param payload - The payload to sign, either as an object or a string
- * @returns The hexadecimal digest of the signature
+ * @param payload - The payload to sign (object or primitive value)
+ * @param secret - The secret key used for signing
+ * @returns Object containing both the signature and the stringified payload
  */
 export function signPayload(
   payload: any,
-): string {
-  // Convert object payload to JSON string
-  const payloadStr = JSON.stringify(payload)
-  // Create the signature using HMAC and the hexadecimal digest 
-  const signature = crypto.createHmac('sha256', SECRET_KEY!).update(payloadStr!).digest('hex');
-  return signature;
+  secret: string
+) {
+  // Convert payload to JSON string
+  const payloadStr = JSON.stringify(payload);
+  
+  // Create signature using HMAC SHA-256 and convert to hexadecimal
+  const signature = crypto.createHmac('sha256', secret).update(payloadStr).digest('hex');
+  
+  return { signature, payloadStr };
 }
