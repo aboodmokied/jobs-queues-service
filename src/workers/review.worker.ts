@@ -27,7 +27,7 @@ export const reviewWorker = new Worker(
       const rate = await sentimentService.analyze(reviewText);
 
       // Create signature for secure callback request
-      const {signature, payloadStr} = signPayload({ rate, reviewId, restaurantId, reviewText }, CALLBACK_SECRET_KEYu!);
+      const {signature, payloadStr} = signPayload({ rate, reviewId, restaurantId, reviewText }, CALLBACK_SECRET_KEY!);
 
       // Send analysis results to the specified callback URL with security signature
       await axios.post(callbackUrl, {
